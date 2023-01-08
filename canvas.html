@@ -14,6 +14,11 @@
   <body style="text-align: center; overscroll-behavior-y: none;">
     <h1>自由帳</h1>
     <div>
+      <label for="bgColor">背景色:</label>
+      <input type="color" id="bgColor" name="bgColor" value="#ffffff">
+      <input type="button" value="設定" onclick="setBgColor()">
+    </div>
+    <div>
         <label>縦幅:</label>
         <input id="width-input" type="number" min="100" max="5000" value="1920">
         <label>横幅:</label>
@@ -22,29 +27,34 @@
     </div>
     <canvas id="canvas"></canvas>
     <div>
+      <label for="color-picker">ペン色:</label>
         <input id="color-picker" type="color" value="#000000">
-        <button id="clear-button">消去</button>
+        <button id="clear-button">クリア</button>
         <input id="size-slider" type="range" min="1" max="250" value="5">
         <button id="export-button">画像として保存</button>
     </div>
     <script>
       // canvas取得
       let canvas = document.getElementById('canvas');
+      let checkerboard = document.getElementById("checkerboard");
       // canvasの2Dコンテキストを取得
       let context = canvas.getContext('2d');
-// キャンバスのサイズを設定する
-function setCanvasSize(width, height) {
+
+      
+
+      // キャンバスのサイズを設定する
+      function setCanvasSize(width, height) {
         canvas.width = width;
         canvas.height = height;
       }
 
-      // キャンバスのサイズを画面の大きさに合わせて設定する
+      // キャンバスのサイズを画面の大きさに合わせて設定
       function setCanvasSizeToWindowSize() {
         setCanvasSize(window.innerWidth*2/3, window.innerHeight*2/3);
       }
       setCanvasSizeToWindowSize();
 
-      // ユーザーが入力した幅と高さを取得し、キャンバスのサイズを設定する
+      // ユーザーが入力した幅と高さを取得し、キャンバスのサイズを設定
       let widthInput = document.getElementById('width-input');
       let heightInput = document.getElementById('height-input');
       let setSizeButton = document.getElementById('set-size-button');
@@ -65,7 +75,7 @@ function setCanvasSize(width, height) {
         color = event.target.value;
       });
 
-      // サイズスライダーで選択された値を取得し、線の太さを変更する
+      // サイズスライダーで選択された値を取得し、線の太さを変更
       let sizeSlider = document.getElementById('size-slider');
       sizeSlider.addEventListener('input', (event) => {
         size = event.target.value;
@@ -98,7 +108,7 @@ function setCanvasSize(width, height) {
       });
 
       
-        // canvas要素にタッチイベントを設定する
+        // canvas要素にタッチイベントを設定
         canvas.addEventListener('touchstart', (event) => {
             isDrawing = true;
             let touch = event.touches[0];
@@ -123,12 +133,21 @@ function setCanvasSize(width, height) {
             isDrawing = false;
         });
 
-      // キャンバスを全消去する
+      // キャンバスを全消去
         function clearCanvas() {
             context.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-    // Clearボタンをクリックしたときに、キャンバスを全消去する
+      //キャンバスの背景色を設定
+      function setBgColor() {
+        var bgColorInput = document.getElementById('bgColor');
+        var bgColor = bgColorInput.value;
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        context.fillStyle = bgColor;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    // Clearボタンをクリックした際、キャンバスを全消去
         let clearButton = document.getElementById('clear-button');
         clearButton.addEventListener('click', clearCanvas);
 
